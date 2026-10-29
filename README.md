@@ -48,28 +48,31 @@ TEACHER_MODEL_NAME=openai/your-model-id
 TEACHER_API_KEY=sk-...
 ```
 
-### 3. Run the test notebook
+### 3. Run notebooks
+
+Select the `.venv` kernel, then open one of:
+
+| Notebook | What it does | Generic for any MCP? |
+| --- | --- | --- |
+| `test_mcp_flows.ipynb` | Smoke test + offline scripted plans + `MCPAgentBlock` seed questions | No (Order Ops demo) |
+| `mcp_distillation_flow.ipynb` | Official SDG Hub **MCP distillation** flow: explore → synthesize questions → expert trajectories | **Yes** (discovers tools via `list_tools`) |
+
+**Distillation notebook extras in `.env`:**
 
 ```bash
-# Select the .venv kernel in Jupyter/VS Code, then open:
-test_mcp_flows.ipynb
+LANGFLOW_URL=http://localhost:7860/api/v1/run/<flow-id>
+LANGFLOW_API_KEY=...   # optional
+# Langflow agent must use a frontier model connected to the same MCP server
 ```
-
-The notebook:
-
-1. Starts `mcp_server.py` if port 8008 is free  
-2. Smoke-tests MCP tools  
-3. Runs offline trajectory synthesis → `tool_calling_dataset_offline.jsonl`  
-4. Runs teacher `MCPAgentBlock` synthesis → `tool_calling_dataset.jsonl` (if `.env` is set)  
-5. Inspects and peeks at saved trajectories  
 
 ### Files
 
 | File | Role |
 | --- | --- |
 | `mcp_server.py` | Sample Order Ops FastMCP server (`list_orders`, `get_order`, `check_inventory`, `create_shipment`) |
-| `test_mcp_flows.ipynb` | End-to-end test notebook for offline + teacher flows |
-| `.env` | Teacher model URL / name / API key (gitignored) |
+| `test_mcp_flows.ipynb` | Offline + `MCPAgentBlock` demo |
+| `mcp_distillation_flow.ipynb` | Generic MCP distillation pipeline |
+| `.env` | Teacher + optional Langflow settings (gitignored) |
 
 ## OpenAPI note
 
