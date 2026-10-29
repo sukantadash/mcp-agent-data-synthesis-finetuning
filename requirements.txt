@@ -1,0 +1,6 @@
+sdg_hub
+fastmcp
+pandas
+nest_asyncio
+ipykernel
+nbclient
