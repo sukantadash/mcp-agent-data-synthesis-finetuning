@@ -123,5 +123,6 @@ def create_shipment(
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "8008"))
-    # Streamable HTTP endpoint for MCPAgentBlock / Langflow
-    mcp.run(transport="http", host="127.0.0.1", port=port)
+    # 0.0.0.0 works in local + OpenShift notebook pods; clients still use 127.0.0.1
+    host = os.environ.get("HOST", "0.0.0.0")
+    mcp.run(transport="http", host=host, port=port)
